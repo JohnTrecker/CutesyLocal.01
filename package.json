@@ -1,0 +1,19 @@
+{
+  "name": "cutesy",
+  "version": "1.0.0",
+  "description": "referral page",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnTrecker/cutesy.git"
+  },
+  "author": "john trecker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JohnTrecker/cutesy/issues"
+  },
+  "homepage": "https://github.com/JohnTrecker/cutesy#readme"
+}
