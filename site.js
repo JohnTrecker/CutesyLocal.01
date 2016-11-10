@@ -1,6 +1,5 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoianR0cmVja2VyIiwiYSI6ImNpdWZ1OWliZzAwaHQyenFmOGN0MXN4YTMifQ.iyXRDHRVMREFePkWFQuyfg';
 var sfmapbox = [-122.413692, 37.775712];
-// sfmapbox = [-122,37];
 var mylocation = sfmapbox;
 var taxon_active = 'Plantae';
 var markers = {};
