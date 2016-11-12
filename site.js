@@ -9,7 +9,7 @@ var marker_me;
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/mapbox/outdoors-v9', //stylesheet location
-    center: sfmapbox, // Center of USA
+    center: sfmapbox, // Center of SF
     zoom: 12, // starting zoom
     // minZoom: 11,
 });
@@ -181,11 +181,19 @@ function getObservation(location, taxon) {
 
 // Create the url for API request
 function createURL(location, taxon) {
+    // url = ['https://api.yelp.com/v3/businesses/search?term=dogs+allowed&latitude=', location[1], '&longitude=', location[0]
+    // ].join('');
+
     url = ['https://api.inaturalist.org/v1/observations?geo=true&native=true&photos=true&lat=',
         location[1], '&lng=', location[0], '&radius=5&iconic_taxa=', taxon, '&order=desc&order_by=created_at'
     ].join('');
     console.log("API url: ", url);
     return url;
+
+
+    // REQUIRED HEADERS:
+    // Content-Type: application/x-www-form-urlencoded
+    // Authorization: Bearer Bqw1iMqFD9gdxePTPlubcT6WZ5JAYC6aeo41eYFZMST3OETrr4n0Y2nq1VlipPvs12RO06J24raNDMht9gA-XHT4NCBnY9ebnCBcUxVDtdMLYDV3C-ortmuFMRQRWHYx
 }
 
 // Check what zoom level for what markers, then map to map
