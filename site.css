@@ -15,26 +15,41 @@ p {font-size: 14px;}
     border-radius: 5px; border: #390 1px solid; height:48px; width: 48px;
     margin: 4px; margin-left: 8px;
 }
-.button.active { border:color:#390; }
+.button.active { border: #390; }
 .button:hover { border-color: #390; }
 
-.button#Plantae { background-image: url('img/icon0_plantae.png') }
-.button#Aves { background-image: url('img/icon0_aves.png') }
-.button#Insecta { background-image: url('img/icon0_insecta.png') }
+.button#Plantae { background-image: url('img/icon_coffee.png') }
+.button#Aves { background-image: url('img/icon_park.png') }
+.button#Insecta { background-image: url('img/icon_event.png') }
 .button#Fungi { background-image: url('img/icon0_fungi.png') }
 
-.button#Plantae.active { background-image: url('img/icon1_plantae.png') }
-.button#Aves.active { background-image: url('img/icon1_aves.png') }
-.button#Insecta.active { background-image: url('img/icon1_insecta.png') }
+.button#Plantae.active { background-color: #2AB7CA; }
+.button#Aves.active { background-color: #7ED321; }
+.button#Insecta.active { background-color: #D0021B; }
 .button#Fungi.active { background-image: url('img/icon1_fungi.png') }
 
-.button#Plantae:hover { background-image: url('img/icon1_plantae.png') }
-.button#Aves:hover { background-image: url('img/icon1_aves.png') }
-.button#Insecta:hover { background-image: url('img/icon1_insecta.png') }
+.button#Plantae:hover { background-color: #2AB7CA; }
+.button#Aves:hover { background-color: #7ED321; }
+.button#Insecta:hover { background-color: #D0021B; }
 .button#Fungi:hover { background-image: url('img/icon1_fungi.png') }
 
+/*.button#FoodDrink { background-image: url('img/icon_coffee.png') }
+.button#Parks { background-image: url('img/icon_park.png') }
+.button#Events { background-image: url('img/icon_event.png') }
+.button#Fungi { background-image: url('img/icon_fungi.png') }
+
+.button#FoodDrink.active { background-color: #2AB7CA; }
+.button#Parks.active { background-color: #7ED321; }
+.button#Events.active { background-color: #D0021B; }
+.button#Fungi.active { background-image: url('img/icon1_fungi.png') }
+
+.button#FoodDrink:hover { background-color: #2AB7CA; }
+.button#Parks:hover { background-color: #7ED321; }
+.button#Events:hover { background-color: #D0021B; }
+.button#Fungi:hover { background-image: url('img/icon1_fungi.png') }*/
+
 .marker {
-    border: #fff 1.4px solid; border-radius: 50%; cursor: pointer; box-shadow: 1px 1px 1px;
+    border: #fff 1.4px solid; border-radius: 50%; cursor: pointer;
     height: 48px; width: 48px;  margin: -24px 0 0 -24px;
     background-size: cover; }
 .marker:hover {  z-index: 1; border-color: #390; }

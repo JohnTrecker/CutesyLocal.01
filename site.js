@@ -124,7 +124,9 @@ function getObservation(location, taxon) {
                 // create an img element for the marker
                 var el = document.createElement('div');
                 el.className = 'marker';
-                img_url = marker.photos[0].url;
+                // ORIGINAL: img_url = marker.photos[0].url;
+                var newImage = taxon_active === 'Plantae' ? 'coffee' : (taxon_active === 'Aves' ? 'park' : 'event');
+                img_url = ["img/icon_", newImage, ".png"].join("");
 
                 // text description for popup
                 var species = marker.species_guess ? marker.species_guess : 'Unknown';
@@ -197,6 +199,9 @@ function createURL(location, taxon) {
 }
 
 // Check what zoom level for what markers, then map to map
+// ==================================================================
+// TODO: cluster markers
+// ==================================================================
 function checkZoom(marker, zoom) {
     var img;
     if (zoom < 12) {
