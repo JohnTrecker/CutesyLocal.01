@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Cutesy Local</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.css' type='text/css' />
+    <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+    <link rel='stylesheet' href='site.css' type='text/css' />
+</head>
+<body class='clip'>
+
+    <div id='sidebar'>
+        <div id='title'>
+            <h1>Cutesy Local</h1>
+            <div id='info' class='mobile-show'></div>
+        </div>
+        <div id='introduction' class='mobile-hide'>
+            <p>Crowdsourced by dog-loving San Franciscans, this map shows the <strong id='count'></strong> most dog-friendly spots in the map area. Search for a different location and check it out!</p>
+        </div>
+        <div id='taxas'>
+            <div><div class='button active' id='restaurants'></div><p>Food/Drink</p></div>
+            <!-- additional serch terms include id='coffee bars beergardens' -->
+            <div><div class='button' id='dog_parks'></div><p>Parks</p></div>
+            <div><div class='button' id='localflavor'></div><p>Events</p></div>
+            <!-- additional serch terms include id='localflavor festivals' -->
+            <!-- <div><div class='button' id='Fungi'></div><p>Fungi</p></div> -->
+            <!-- additional button categories could include id='petadoption pet_training dogwalkers emergencypethospital' -->
+
+        </div>
+    </div>
+    <div class='loading'></div>
+
+    <div id='map'></div>
+
+<script src='site.js'></script>
+
+</body>
+</html>
