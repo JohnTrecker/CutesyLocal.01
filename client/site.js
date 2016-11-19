@@ -102,92 +102,128 @@ function getObservation(location, taxon) {
 
     $('.loading').show();
 
-    // clean up previous markers
     for (marker in markers) {
         markers[marker].remove();
     }
     markers = {};
-    var accessToken = 'Bearer Bqw1iMqFD9gdxePTPlubcT6WZ5JAYC6aeo41eYFZMST3OETrr4n0Y2nq1VlipPvs12RO06J24raNDMht9gA-XHT4NCBnY9ebnCBcUxVDtdMLYDV3C-ortmuFMRQRWHYx';
+    var accessToken = 'Bqw1iMqFD9gdxePTPlubcT6WZ5JAYC6aeo41eYFZMST3OETrr4n0Y2nq1VlipPvs12RO06J24raNDMht9gA-XHT4NCBnY9ebnCBcUxVDtdMLYDV3C-ortmuFMRQRWHYx';
 
     //create url
     var yelp_url = createURL(location, taxon);
 
+    $.get(yelp_url, {
+      headers: {
+        Authorization: 'Bearer ' + accessToken
+      },
+      dataType: 'jsonp',
+      cache: true
+    })
+    // .done(function(items) {
+    //   // ================
+    //   // callback(items);
+    //   // ================
+    //   console.log(items);
+    // })
+    // .fail(function(responseJSON) {
+    //   responseJSON.error.errors.forEach(function(err) {
+    //     console.error(err);
+    //   });
+    // });
+    .done(function(data, textStatus, jqXHR) {
+            console.log('success[' + data + '], status[' + textStatus + '], jqXHR[' + JSON.stringify(jqXHR) + ']');
+        }
+    )
+    .fail(function(jqXHR, textStatus, errorThrown) {
+                        console.log('error[' + errorThrown + '], status[' + textStatus + '], jqXHR[' + JSON.stringify(jqXHR) + ']');
+            }
+    );
+
+
+    // clean up previous markers
+
     // get results from url
-    try {
+    // try {
+    //     $.ajax(yelp_url, {
+    //         headers: { authorization: accessToken },
+    //         type: "GET",
+    //         dataType: "jsonp",
+    //         beforeSend: function(xhr){xhr.setRequestHeader('X-Test-Header', 'test-value');},
+    //         success: function() { alert('Success!' + authHeader); }
+    //     });
 
-        yelp_results = $.getJSON(yelpl_url, {'Authorization': accessToken})
-        .done(function() {
-            // console.log("API results: ", yelp_results.responseJSON.results);
+    //     // yelp_results = $.getJSON(yelpl_url, {'Authorization': accessToken})
+    //     // .done(function() {
+    //     //     // console.log("API results: ", yelp_results.responseJSON.results);
 
-            // Update count in html description
-            $('#count').html(yelp_results.responseJSON.results.length);
+    //     //     // Update count in html description
+    //     //     $('#count').html(yelp_results.responseJSON.results.length);
 
-            // Used for marker change on zoom level
-            var zoom = map.getZoom();
+    //     //     // Used for marker change on zoom level
+    //     //     var zoom = map.getZoom();
 
-            // Iterate through all API results
-            yelp_results.responseJSON.results.businesses.forEach(function(marker) {
-                // create an img element for the marker
-                var el = document.createElement('div');
-                el.className = 'marker';
-                // ORIGINAL: img_url = marker.photos[0].url;
-                var iconName = {'restaurants': 'coffee', 'dog_parks': 'park', 'localflavor': 'event'};
-                img_url = ["img/icon_", iconName[taxon_active], ".png"].join("");
+    //     //     // Iterate through all API results
+    //     //     yelp_results.responseJSON.results.businesses.forEach(function(marker) {
+    //     //         // create an img element for the marker
+    //     //         var el = document.createElement('div');
+    //     //         el.className = 'marker';
+    //     //         // ORIGINAL: img_url = marker.photos[0].url;
+    //     //         var iconName = {'restaurants': 'coffee', 'dog_parks': 'park', 'localflavor': 'event'};
+    //     //         img_url = ["img/icon_", iconName[taxon_active], ".png"].join("");
 
-                // information for popup: Name, Address, Rating (with corresponding smiley), venue image, venue type image
-                var name = marker.name;
-                var address = marker.address1;
-                // ============================
-                // TODO: replace rating system
-                // ============================
-                var rating = [(marker.rating / 5) * 100, '%'].join('');
-                var image = marker.image_url;
-                var coordinates = [].concat(marker.coordinates.longitude, marker.coordinates.latitude);
-                var text = [name, address, rating].join('\n');
+    //     //         // information for popup: Name, Address, Rating (with corresponding smiley), venue image, venue type image
+    //     //         var name = marker.name;
+    //     //         var address = marker.address1;
+    //     //         // ============================
+    //     //         // TODO: replace rating system
+    //     //         // ============================
+    //     //         var rating = [(marker.rating / 5) * 100, '%'].join('');
+    //     //         var image = marker.image_url;
+    //     //         var coordinates = [].concat(marker.coordinates.longitude, marker.coordinates.latitude);
+    //     //         var text = [name, address, rating].join('\n');
 
-                // img_url = img_url.replace("http", "https");
-                $(el).attr('data-img', img_url);
-                $(el).attr('data-taxon', taxon);
-                $(el).attr('data-text', text);
-                $(el).attr('data-latlon', coordinates);
+    //     //         // img_url = img_url.replace("http", "https");
+    //     //         $(el).attr('data-img', img_url);
+    //     //         $(el).attr('data-taxon', taxon);
+    //     //         $(el).attr('data-text', text);
+    //     //         $(el).attr('data-latlon', coordinates);
 
-                // Map to the map with markers for the current zoomlevel
-                checkZoom(el, zoom);
+    //     //         // Map to the map with markers for the current zoomlevel
+    //     //         checkZoom(el, zoom);
 
-                // add marker to map
-                markers[marker.name] = new mapboxgl.Marker(el)
-                    .setLngLat(coordinates)
-                    .addTo(map);
-            });
+    //     //         // add marker to map
+    //     //         markers[marker.name] = new mapboxgl.Marker(el)
+    //     //             .setLngLat(coordinates)
+    //     //             .addTo(map);
+    //     //     });
 
-            $('.loading').hide();
+    //     //     $('.loading').hide();
 
-            // markers on click
-            $('.marker').click(function(e) {
+    //     //     // markers on click
+    //     //     $('.marker').click(function(e) {
 
-                e.stopPropagation();
+    //     //         e.stopPropagation();
 
-                var latlon = $(this).attr('data-latlon').split(",");
-                latlon = [Number(latlon[0]), Number(latlon[1])];
-                // ORIGINAL var img_med = $(this).attr('data-img').replace('square', 'medium');
-                var img_med = $(this).attr('data-img');
-                var html = "";
-                html = ["<div class='img-md' style='background-image:url(", img_med, ")'></div><div><p>",
-                    $(this).attr('data-text'), "</p>"
-                ].join("");
+    //     //         var latlon = $(this).attr('data-latlon').split(",");
+    //     //         latlon = [Number(latlon[0]), Number(latlon[1])];
+    //     //         // ORIGINAL var img_med = $(this).attr('data-img').replace('square', 'medium');
+    //     //         var img_med = $(this).attr('data-img');
+    //     //         var html = "";
+    //     //         html = ["<div class='img-md' style='background-image:url(", img_med, ")'></div><div><p>",
+    //     //             $(this).attr('data-text'), "</p>"
+    //     //         ].join("");
 
-                $('.mapboxgl-popup') ? $('.mapboxgl-popup').remove() : null;
+    //     //         $('.mapboxgl-popup') ? $('.mapboxgl-popup').remove() : null;
 
-                var popup = new mapboxgl.Popup()
-                    .setLngLat(latlon)
-                    .setHTML(html)
-                    .addTo(map);
-            });
+    //     //         var popup = new mapboxgl.Popup()
+    //     //             .setLngLat(latlon)
+    //     //             .setHTML(html)
+    //     //             .addTo(map);
+    //     //     });
+    //     // });
 
-        });
-    } catch (e) {
-        window.alert("API not working properly :(")
-    }
+    // } catch (e) {
+    //     window.alert("API not working properly :(")
+    // }
 }
 
 // Create the url for API request
