@@ -5,6 +5,7 @@
   "description": "Find dog-friendly places around San Francisco",
   "homepage": "https://github.com/JohnTrecker/CutesyLocal#readme",
   "license": "MIT",
+  "main": "server/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JohnTrecker/CutesyLocal.git"
@@ -18,6 +19,7 @@
     "body-parser": "^1.15.2",
     "cheerio": "^0.22.0",
     "express": "^4.14.0",
+    "google-geocoding": "^0.1.7",
     "nodemon": "^1.11.0",
     "request": "^2.79.0",
     "yelp-v3": "0.0.5"

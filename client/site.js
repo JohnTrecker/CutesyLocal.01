@@ -31,7 +31,7 @@ map.on('load', function() {
 
     //go to SF and retrieve data
     mapMe(mylocation);
-    getObservation(mylocation, taxon_active);
+    // getObservation(mylocation, taxon_active);
 
     //Toggle icons in the event of zoom change
     map.on('zoom', function() {
