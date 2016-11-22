@@ -6,7 +6,6 @@ public/bundle.js
 # OSX
 #
 .DS_Store
-
 # Xcode
 #
 build/

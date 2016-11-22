@@ -18,14 +18,14 @@ app.use(bodyParser.json());
 app.use(express.static('./client'));
 
 // Import the pokemonRouter and assign it to the correct route:
-// var pokemonRouter = require('./resources/pokemon/pokemonRouter');
+var apiRouter = require('./resources/api/apiRouter');
 
-// app.use('/api/pokemon', pokemonRouter);
+app.use('/api', apiRouter);
 
 
 
-app.get('/scrape', function(req, res){
-  // res.json({ message: 'Welcome to the Cutesy Local RESTful API!' });
+app.get('/', function(req, res){
+  res.json({ message: 'Welcome to the Cutesy Local RESTful API!' });
 
   // scrape for local dog events
   var url = 'http://dogtrekker.com/events';
@@ -42,11 +42,11 @@ app.get('/scrape', function(req, res){
     console.log("Status code: ", response.statusCode);
 
     var $ = cheerio.load(body);
-    $('div#events > div.activity').each(function(index) {
+    $('div#events > div.activity').each(function(value, index) {
         if ( $(this).find('div.ypaddress').text().includes('San Francisco') ) {
         // collection
         var data = {
-          // "image_url": null,
+          "image_url": null,
           "dates": null,
           "description": null,
           "location": {
@@ -57,13 +57,13 @@ app.get('/scrape', function(req, res){
             "city": "San Francisco"
           },
           "name": null,
-          // "categories": [
-          //   {
-          //     "alias": "events",
-          //     "title": "Dog Events"
-          //   }
-          // ],
-          // "id": null,
+          "categories": [
+            {
+              "alias": "events",
+              "title": "Dog Events"
+            }
+          ],
+          "id": null,
           "url": null,
           "coordinates": {
             "latitude": null,
@@ -71,13 +71,17 @@ app.get('/scrape', function(req, res){
           }
         }
         var loc = $(this).find('div.ypaddress').text().trim();
+        console.log("'loc' of entry ", index," equals:\n", loc);
         var address = loc.slice(0, loc.indexOf('Phone:')).trim();
+        console.log("'address' of entry ", index," equals:\n", address);
         var raw = $(this).text().trim();
+        console.log("'raw' of entry ", index," equals:\n", raw);
 
+        // TODO: verify address1
         data.name = $(this).find('div.title > a').text().trim();
         data.location.address1 = address.slice(0, address.indexOf(','));
         data.location.zip_code = address.slice(-5);
-        data.dates = raw.slice(2, raw.indexOf('\r\n\r\n'));
+        data.dates = raw.slice(raw.indexOf('\r\n'), raw.indexOf('\r\n\r\n'));
         data.url = 'http://dogtrekker.com' + $(this).find('div.activitylinks > a:nth-child(2)').attr('href');
         console.log()
         geocoding.geocode(address, function(err, location) {
