@@ -1,7 +1,10 @@
-var express = require('express');
+var express    = require('express');
 var bodyParser = require('body-parser');
+var request    = require('request');
+var cheerio    = require('cheerio');
+var path       = require('path');
+var fs         = require('fs');
 // var morgan = require('morgan');
-var path = require('path');
 // var db = require('./db');
 
 // Create the Express application:
@@ -19,6 +22,44 @@ app.use(express.static('./client'));
 // var pokemonRouter = require('./resources/pokemon/pokemonRouter');
 
 // app.use('/api/pokemon', pokemonRouter);
+
+
+
+app.get('/scrape', function(req, res){
+  // Let's scrape Anchorman 2
+  url = 'http://http://dogtrekker.com/events/';
+
+  request(url, function(error, response, html){
+    if(!error){
+      var $ = cheerio.load(html);
+
+      var title, release, rating;
+      var json = { title : "", release : "", rating : ""};
+
+      $('.title_wrapper').filter(function(){
+        var data = $(this);
+        title = data.children().first().text().trim();
+        release = data.children().last().children().last().text().trim();
+
+        json.title = title;
+        json.release = release;
+      })
+
+      $('.ratingValue').filter(function(){
+        var data = $(this);
+        rating = data.text().trim();
+
+        json.rating = rating;
+      })
+    }
+
+    fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
+      console.log('File successfully written! - Check your project directory for the output.json file');
+    })
+
+    res.send('Check your console!')
+  })
+})
 
 app.get('/', function (req, res) {
   res.json({ message: 'Welcome to the Cutesy Local RESTful API!' });
