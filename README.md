@@ -5,6 +5,7 @@ This repo contains the Cutesy Local API built with Node, Express, and MongoDB. T
 ## How to start this app
 
 * `npm install`
+* insert API keys in `config.example.json` file and rename `config.json`
 * `npm start`
 
 ## Improvements
@@ -24,18 +25,19 @@ Using the existing code provided in `server/`, follow the steps below to build o
 
 |      URL             | HTTP Verb | Request Body |                         Result                                           |
 |:--------------------:|:---------:|:------------:|:------------------------------------------------------------------------:|
-| /api/venue           |    GET    |    empty     |                                                Return JSON of all venues |
-| /api/venue           |    POST   |     JSON     |                        Create new venue and return JSON of created venue |
-| /api/venue           |   DELETE  |    empty     |                   Delete all venues in and return JSON of deleted venues |
-| /api/venue/:number   |    GET    |    empty     |                              Return JSON of venue with matching `number` |
-| /api/venue/:number   |    PUT    |     JSON     |     Update venue with matching `number` and return JSON of updated venue |
-| /api/venue/:number   |   DELETE  |    empty     |     Delete venue with matching `number` and return JSON of deleted venue |
-| /api/user            |    GET    |    empty     |                                                 Return JSON of all users |
-| /api/user            |    POST   |     JSON     |                          Create new user and return JSON of created user |
-| /api/user            |   DELETE  |    empty     |                     Delete all users in and return JSON of deleted users |
-| /api/user/:number    |    GET    |    empty     |                               Return JSON of user with matching `number` |
-| /api/user/:number    |    PUT    |     JSON     |       Update user with matching `number` and return JSON of updated user |
-| /api/user/:number    |   DELETE  |    empty     |       Delete user with matching `number` and return JSON of deleted user |
+| /api/venues          |    GET    |    empty     |                                                Return JSON of all venues |
+| /api/venues          |    POST   |     JSON     |                        Create new venue and return JSON of created venue |
+| /api/venues          |   DELETE  |    empty     |                   Delete all venues in and return JSON of deleted venues |
+| /api/venues/:number  |    GET    |    empty     |                              Return JSON of venue with matching `number` |
+| /api/venues/:number  |    PUT    |     JSON     |     Update venue with matching `number` and return JSON of updated venue |
+| /api/venues/:number  |   DELETE  |    empty     |     Delete venue with matching `number` and return JSON of deleted venue |
+| /api/keys            |    GET    |     JSON     |                                                   Return JSON of API key |
+| /api/users           |    GET    |    empty     |                                                 Return JSON of all users |
+| /api/users           |    POST   |     JSON     |                          Create new user and return JSON of created user |
+| /api/users           |   DELETE  |    empty     |                     Delete all users in and return JSON of deleted users |
+| /api/users/:number   |    GET    |    empty     |                               Return JSON of user with matching `number` |
+| /api/users/:number   |    PUT    |     JSON     |       Update user with matching `number` and return JSON of updated user |
+| /api/users/:number   |   DELETE  |    empty     |       Delete user with matching `number` and return JSON of deleted user |
 
 
 - [ ] Save mongoose to `package.json`

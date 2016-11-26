@@ -1,85 +1,92 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoianR0cmVja2VyIiwiYSI6ImNpdWZ1OWliZzAwaHQyenFmOGN0MXN4YTMifQ.iyXRDHRVMREFePkWFQuyfg';
 var sfmapbox = [-122.413692, 37.775712];
 var mylocation = sfmapbox;
 var taxon_active = 'restaurants';
 var markers = {};
 var marker_me;
 
-// Create a new dark theme map
-var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
-    center: sfmapbox, // Center of SF
-    zoom: 12, // starting zoom
-    // minZoom: 11,
-});
+axios.get('/api/keys')
+  .then(function (response) {
+    mapboxgl.accessToken = response.data;
 
-map.on('load', function() {
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v9',
+        center: sfmapbox,
+        zoom: 12,
+    });
 
-    // Disable scroll in posts
-    if (window.location.search.indexOf('embed') !== -1) map.scrollZoom.disable();
+    map.on('load', function() {
 
-    //Add controls for navigation, geocoding and geolocation
-    // ==========================================================================
-    // TODO: map.flyTo({ 'center': location, 'zoom': 12, 'bearing': ??? });
-    // ==========================================================================
-    var geocoder = new mapboxgl.Geocoder();
-    map.addControl(geocoder);
-    map.addControl ( new mapboxgl.Navigation({ position: 'top-left' }) );
-    var geolocator = new mapboxgl.Geolocate({ position: 'top-left' });
-    map.addControl(geolocator);
+        // Disable scroll in posts
+        if (window.location.search.indexOf('embed') !== -1) map.scrollZoom.disable();
 
-    //go to SF and retrieve data
-    mapMe(mylocation);
-    // getObservation(mylocation, taxon_active);
+        //Add controls for navigation, geocoding and geolocation
+        // ==========================================================================
+        // TODO: map.flyTo({ 'center': location, 'zoom': 12, 'bearing': ??? });
+        // ==========================================================================
+        var geocoder = new mapboxgl.Geocoder();
+        map.addControl(geocoder);
+        map.addControl ( new mapboxgl.Navigation({ position: 'top-left' }) );
+        var geolocator = new mapboxgl.Geolocate({ position: 'top-left' });
+        map.addControl(geolocator);
 
-    //Toggle icons in the event of zoom change
-    map.on('zoom', function() {
-        var zoom = map.getZoom();
-        $('.marker').each(function() {
-            checkZoom(this, zoom);
+        //go to SF and retrieve data
+        mapMe(mylocation);
+        // getObservation(mylocation, taxon_active);
+
+        //Toggle icons in the event of zoom change
+        map.on('zoom', function() {
+            var zoom = map.getZoom();
+            $('.marker').each(function() {
+                checkZoom(this, zoom);
+            });
         });
+
+        //Interact with venue type buttons
+        $('.button').on('click', function() {
+            $('.button').removeClass('active');
+            $(this).addClass('active');
+            taxon_active = $(this).attr('id');
+            getObservation(mylocation, taxon_active);
+            $('.mapboxgl-popup') ? $('.mapboxgl-popup').remove() : null;
+        });
+
+        //Redo quest on location change
+        geocoder.on('result', function(e) {
+            console.log('new location: ' + e.result.center);
+            mylocation = e.result.center;
+            getObservation(mylocation, taxon_active);
+            mapMe(mylocation);
+            $('.mapboxgl-popup') ? $('.mapboxgl-popup').remove() : null;
+        });
+
+        //Redo quest on geolocation
+        geolocator.on('geolocate', function(position) {
+            mylocation = [position.coords.longitude, position.coords.latitude];
+            map.zoomTo(12);
+            mapMe(mylocation);
+            getObservation(mylocation, taxon_active);
+        });
+
+        //Mobile friendly
+        $('#info').on('click', function() {
+            if ( $('#introduction').is(':visible') ) {
+                $('#introduction').hide();
+                $('#info').css('background-image', 'url(img/arrow_down.svg)');
+                $('#sidebar').css('height', '150px');
+            } else {
+                $('#introduction').show();
+                $('#info').css("background-image", 'url(img/arrow_up.svg)');
+                $('#sidebar').css('height', '240px');
+            }
+        })
     });
 
-    //Interact with venue type buttons
-    $('.button').on('click', function() {
-        $('.button').removeClass('active');
-        $(this).addClass('active');
-        taxon_active = $(this).attr('id');
-        getObservation(mylocation, taxon_active);
-        $('.mapboxgl-popup') ? $('.mapboxgl-popup').remove() : null;
-    });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
-    //Redo quest on location change
-    geocoder.on('result', function(e) {
-        console.log('new location: ' + e.result.center);
-        mylocation = e.result.center;
-        getObservation(mylocation, taxon_active);
-        mapMe(mylocation);
-        $('.mapboxgl-popup') ? $('.mapboxgl-popup').remove() : null;
-    });
-
-    //Redo quest on geolocation
-    geolocator.on('geolocate', function(position) {
-        mylocation = [position.coords.longitude, position.coords.latitude];
-        map.zoomTo(12);
-        mapMe(mylocation);
-        getObservation(mylocation, taxon_active);
-    });
-
-    //Mobile friendly
-    $('#info').on('click', function() {
-        if ( $('#introduction').is(':visible') ) {
-            $('#introduction').hide();
-            $('#info').css('background-image', 'url(img/arrow_down.svg)');
-            $('#sidebar').css('height', '150px');
-        } else {
-            $('#introduction').show();
-            $('#info').css("background-image", 'url(img/arrow_up.svg)');
-            $('#sidebar').css('height', '240px');
-        }
-    })
-});
 
 // Map the user location using a marker called me
 function mapMe(location) {
@@ -106,37 +113,10 @@ function getObservation(location, taxon) {
         markers[marker].remove();
     }
     markers = {};
-    var accessToken = 'Bqw1iMqFD9gdxePTPlubcT6WZ5JAYC6aeo41eYFZMST3OETrr4n0Y2nq1VlipPvs12RO06J24raNDMht9gA-XHT4NCBnY9ebnCBcUxVDtdMLYDV3C-ortmuFMRQRWHYx';
-
     //create url
     var yelp_url = createURL(location, taxon);
 
-    $.get(yelp_url, {
-      headers: {
-        Authorization: 'Bearer ' + accessToken
-      },
-      dataType: 'jsonp',
-      cache: true
-    })
-    // .done(function(items) {
-    //   // ================
-    //   // callback(items);
-    //   // ================
-    //   console.log(items);
-    // })
-    // .fail(function(responseJSON) {
-    //   responseJSON.error.errors.forEach(function(err) {
-    //     console.error(err);
-    //   });
-    // });
-    .done(function(data, textStatus, jqXHR) {
-            console.log('success[' + data + '], status[' + textStatus + '], jqXHR[' + JSON.stringify(jqXHR) + ']');
-        }
-    )
-    .fail(function(jqXHR, textStatus, errorThrown) {
-                        console.log('error[' + errorThrown + '], status[' + textStatus + '], jqXHR[' + JSON.stringify(jqXHR) + ']');
-            }
-    );
+    // TODO: Get yelp data
 
 
     // clean up previous markers

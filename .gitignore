@@ -3,6 +3,9 @@ node_modules
 .DS_Store
 public/bundle.js
 
+## API keys ##
+server/config/config.json
+
 # OSX
 #
 .DS_Store
