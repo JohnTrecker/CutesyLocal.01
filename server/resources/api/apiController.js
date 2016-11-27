@@ -10,6 +10,7 @@ var keys = require('../../config/config.json');
 mongoose.Promise = require('bluebird');
 
 // TODO: [ ] verify case sensativity for `require('/api')`
+//       [ ] verify status / res order
 //       [ ] find and assign appropriate endpoint to variable
 //           for each controller method, then call `.find()`, etc.
 //       [ ] update all status codes
@@ -92,12 +93,11 @@ exports.deleteOne = function (req, res) {
 };
 
 exports.retrieveKey = function (req, res) {
-  console.log('*********** req.data *********', req.data);
-  key = req.data;
+  var key = keys.mapboxgl_access_token;
   if (key === undefined) {
     console.log('error retreiving key');
     res.send(404);
   } else {
-    res.sendStatus(200).json(key);
+    res.json(key).sendStatus(200);
   }
 };
