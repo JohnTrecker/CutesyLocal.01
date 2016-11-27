@@ -98,6 +98,6 @@ exports.retrieveKey = function (req, res) {
     console.log('error retreiving key');
     res.send(404);
   } else {
-    res.json(key).sendStatus(200);
+    res.json(key);
   }
 };
