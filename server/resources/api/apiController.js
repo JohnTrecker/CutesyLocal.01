@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var axios = require('axios');
 // ================================
 // TODO: verify case sensativity update apiRouter methods
 // ================================
@@ -19,7 +20,7 @@ mongoose.Promise = require('bluebird');
 exports.retrieve = function (req, res) {
   Venues.find({}, function(error, venues) {
     if (error) {
-      console.log('error retreiving venues: ', error);
+      console.log('error retrieving venues: ', error);
       res.send(404);
     } else {
       res.sendStatus(200).json(venues);
@@ -95,9 +96,36 @@ exports.deleteOne = function (req, res) {
 exports.retrieveKey = function (req, res) {
   var key = keys.mapboxgl_access_token;
   if (key === undefined) {
-    console.log('error retreiving key');
+    console.log('error retrieving key');
     res.send(404);
   } else {
     res.json(key);
   }
 };
+
+exports.retrieveYelp = function (req, res) {
+  // TODO: make yelp request dynamic
+  var yelp_url = 'https://api.yelp.com/v3/businesses/search?term=dogs+allowed&latitude=37.775712&longitude=-122.413692&radius=8000&limit=5&categories=restaurants';
+  var token = 'Bearer ' + keys.yelp_api_token;
+
+  axios({
+    url: yelp_url,
+    method: 'get',
+    headers: { authorization: token }
+  })
+  .then(function(result){
+    console.log('success retreiving yelp data on back end');
+    if (result === undefined) {
+      // console.log('Back end retrieved yelp data is undefined :\n', result);
+      res.send(404);
+    } else {
+      // console.log('Back end retrieved yelp data:\n', result.data);
+      res.json(result.data);
+    }
+  })
+  .catch(function(error){
+    console.log('error retrieving yelp data on back end:\n', error)
+  })
+
+};
+

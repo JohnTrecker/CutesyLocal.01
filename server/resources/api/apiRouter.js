@@ -2,7 +2,7 @@ var apiRouter = require('express').Router();
 var apiController = require('./apiController');
 
 // =====================================================================
-// TODO: Create route handlers for each of the methods in apiController
+// TODO: Create route handlers for '/users' endpoint
 // =====================================================================
 apiRouter.route('/venues')
   .get(function(req, res) {
@@ -24,6 +24,12 @@ apiRouter.route('/keys')
   .get(function(req, res) {
     apiController.retrieveKey(req, res);
   });
+
+apiRouter.route('/yelp')
+  .get(function(req, res) {
+    apiController.retrieveYelp(req, res);
+  });
+
 
 // apiRouter.route('/users')
 //   .get(function(req, res) {
